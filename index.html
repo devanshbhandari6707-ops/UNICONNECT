@@ -3,73 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduConnect | Internship Portal</title>
+    <title>UniConnect | Student & University Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav>
-        <div class="logo">EduConnect</div>
+        <div class="logo">UniConnect</div>
         <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
     </nav>
 
     <div class="container">
         <section id="login-section" class="card">
-            <h2>Welcome Back</h2>
-            <p>Please select your portal</p>
+            <h2>Welcome to UniConnect</h2>
+            <p>Select your portal to continue</p>
             <div class="button-group">
-                <button class="btn-primary" onclick="showDashboard('student')">Student Login</button>
-                <button class="btn-secondary" onclick="showDashboard('uni')">University Login</button>
+                <button class="btn-primary" onclick="showDashboard('student')">Student Portal</button>
+                <button class="btn-secondary" onclick="showDashboard('uni')">University Portal</button>
             </div>
         </section>
 
-      <section id="student-dashboard" class="hidden">
-    <header class="dashboard-header">
-        <h1>Student Dashboard</h1>
-        <div class="stats">
-            <div class="stat-card">Overall Progress: <span id="student-progress">75%</span></div>
-        </div>
-    </header>
-    
-    <div class="dashboard-grid">
-        <div class="column">
-            <h3>Available Opportunities</h3>
-            <div id="opportunity-list" class="grid-vertical"></div>
-        </div>
+        <section id="student-dashboard" class="hidden">
+            <header class="dash-header">
+                <h1>Student Dashboard</h1>
+                <div class="stat-pill">My Progress: <span id="progress-val">0%</span></div>
+            </header>
+            
+            <div class="dashboard-grid">
+                <div class="column">
+                    <h3>Available Opportunities</h3>
+                    <div id="opportunity-list" class="grid-vertical"></div>
+                </div>
+                <div class="column">
+                    <h3>Applied & Enrolled</h3>
+                    <div id="applied-list" class="grid-vertical"></div>
+                </div>
+            </div>
+        </section>
 
-        <div class="column">
-            <h3>My Applications</h3>
-            <div id="applied-list" class="grid-vertical"></div>
-        </div>
-    </div>
-</section>
         <section id="uni-dashboard" class="hidden">
-            <h1>University Admin</h1>
-            <div class="card">
+            <h1>University Administration</h1>
+            <div class="card form-card">
                 <h3>Post New Opportunity</h3>
-                <input type="text" id="opp-title" placeholder="Title (e.g. UX Design Internship)">
-                <select id="opp-type">
-                    <option value="Internship">Internship</option>
-                    <option value="Certification">Certification</option>
-                </select>
-                <button class="btn-primary" onclick="addOpportunity()">Post Now</button>
+                <div class="form-group">
+                    <input type="text" id="opp-title" placeholder="Internship or Course Title">
+                    <select id="opp-type">
+                        <option value="Internship">Internship</option>
+                        <option value="Certification">Certification</option>
+                    </select>
+                    <button class="btn-primary" onclick="addOpportunity()">Post Now</button>
+                </div>
             </div>
 
-            <h3>Enrolled Students</h3>
-            <table id="student-table">
-                <thead>
-                    <tr>
-                        <th>Student Name</th>
-                        <th>Course</th>
-                        <th>Progress</th>
-                    </tr>
-                </thead>
-                <tbody id="student-body">
-                    </tbody>
-            </table>
+            <h3>Active Postings</h3>
+            <div id="uni-manage-list" class="grid-vertical"></div>
         </section>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
