@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UniIntern Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>UniIntern Portal</h1>
+
+    <!-- Login Section -->
+    <div id="login-section">
+        <h2>Login</h2>
+
+        <div class="role-select">
+            <button onclick="setRole('student')">Student</button>
+            <button onclick="setRole('university')">University</button>
+        </div>
+
+        <input type="text" id="username" placeholder="Enter Username">
+        <input type="password" id="password" placeholder="Enter Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="student-dashboard" class="hidden">
+        <h2>Student Dashboard</h2>
+        <button onclick="logout()">Logout</button>
+
+        <h3>Available Internships</h3>
+        <ul id="internship-list"></ul>
+
+        <h3>Your Progress</h3>
+        <ul id="progress-list"></ul>
+    </div>
+
+    <!-- University Dashboard -->
+    <div id="university-dashboard" class="hidden">
+        <h2>University Dashboard</h2>
+        <button onclick="logout()">Logout</button>
+
+        <h3>Add Internship</h3>
+        <input type="text" id="new-internship" placeholder="Internship Title">
+        <button onclick="addInternship()">Add</button>
+
+        <h3>Add Certification</h3>
+        <input type="text" id="new-certification" placeholder="Certification Name">
+        <button onclick="addCertification()">Add</button>
+
+        <h3>Enrolled Students</h3>
+        <ul id="student-list"></ul>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
