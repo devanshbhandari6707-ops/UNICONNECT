@@ -1,101 +1,38 @@
 :root {
     --primary: #2563eb;
-    --secondary: #64748b;
-    --bg: #f8fafc;
-    --card: #ffffff;
+    --primary-dark: #1d4ed8;
+    --bg: #f0f4f8;
     --text: #1e293b;
+    --success: #10b981;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    margin: 0;
-}
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+nav { background: #fff; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
 
-nav {
-    background: white;
-    padding: 1rem 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
+.container { max-width: 1100px; margin: 2rem auto; padding: 0 20px; }
+.card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.hidden { display: none !important; }
 
-.logo { font-weight: 800; color: var(--primary); font-size: 1.5rem; }
+/* Dashboard Layout */
+.dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1rem; }
+.grid-vertical { display: flex; flex-direction: column; gap: 12px; }
 
-.container { max-width: 1000px; margin: 3rem auto; padding: 0 1rem; }
+/* Cards & Buttons */
+.opp-card { background: white; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+.opp-card.applied { border-left-color: var(--success); background: #f0fdf4; }
 
-.card {
-    background: var(--card);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.hidden { display: none; }
-
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
-
-.opp-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    border-left: 5px solid var(--primary);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    text-align: left;
-}
-
-button {
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
+button { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; transition: 0.3s; }
 .btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: #1d4ed8; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary { background: #e2e8f0; color: var(--text); margin-left: 10px; }
+.btn-delete { background: #fee2e2; color: #ef4444; font-size: 0.8rem; }
 
-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 8px; overflow: hidden; }
-th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
-th { background: #f1f5f9; }
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
-}
+/* Forms */
+.form-group { display: flex; gap: 10px; margin-top: 15px; }
+input, select { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; }
 
-.grid-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
+.status-tag { background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+.stat-pill { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; display: inline-block; }
 
-.opp-card {
-    background: white;
-    padding: 1.2rem;
-    border-radius: 10px;
-    border-left: 5px solid var(--primary);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.applied-badge {
-    background: #dcfce7;
-    color: #166534;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: bold;
-}
-
-@media (max-width: 768px) {
-    .dashboard-grid { grid-template-columns: 1fr; }
-}
-
+@media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } .form-group { flex-direction: column; } }
