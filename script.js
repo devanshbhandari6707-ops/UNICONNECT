@@ -1,12 +1,12 @@
-// --- DATABASE INITIALIZATION ---
+// INITIALIZE DATA
 let opportunities = JSON.parse(localStorage.getItem('uni_opps')) || [
-    { id: 1001, title: "Software Engineering Intern", type: "Internship" },
-    { id: 1002, title: "Full Stack Certification", type: "Certification" }
+    { id: 101, title: "Frontend Developer", type: "Internship" },
+    { id: 102, title: "UI/UX Course", type: "Certification" }
 ];
 
 let appliedIds = JSON.parse(localStorage.getItem('uni_applied')) || [];
 
-// --- NAVIGATION ---
+// NAVIGATION
 function showDashboard(role) {
     document.getElementById('login-section').classList.add('hidden');
     document.getElementById('logoutBtn').classList.remove('hidden');
@@ -22,85 +22,96 @@ function showDashboard(role) {
     }
 }
 
-// --- STUDENT VIEW LOGIC ---
+// STUDENT FUNCTIONS
 function renderStudentView() {
-    const availableList = document.getElementById('opportunity-list');
-    const appliedList = document.getElementById('applied-list');
+    const availableDiv = document.getElementById('opportunity-list');
+    const appliedDiv = document.getElementById('applied-list');
 
-    // Filter logic
-    const availableItems = opportunities.filter(opp => !appliedIds.includes(opp.id));
-    const appliedItems = opportunities.filter(opp => appliedIds.includes(opp.id));
+    // Clear lists
+    availableDiv.innerHTML = "";
+    appliedDiv.innerHTML = "";
 
-    // Update Progress Bar (Example: 20% per application up to 100)
-    const progress = Math.min(appliedIds.length * 20, 100);
-    document.getElementById('progress-val').innerText = progress + "%";
+    opportunities.forEach(opp => {
+        const isApplied = appliedIds.includes(opp.id);
+        
+        const html = `
+            <div class="opp-card ${isApplied ? 'applied' : ''}">
+                <div>
+                    <strong>${opp.title}</strong><br>
+                    <small>${opp.type}</small>
+                </div>
+                ${isApplied 
+                    ? '<span class="status-tag">Enrolled</span>' 
+                    : `<button class="btn-primary" onclick="applyFor(${opp.id})">Apply</button>`
+                }
+            </div>
+        `;
 
-    availableList.innerHTML = availableItems.map(opp => `
-        <div class="opp-card">
-            <div><strong>${opp.title}</strong><br><small>${opp.type}</small></div>
-            <button class="btn-primary" onclick="applyFor(${opp.id})">Apply</button>
-        </div>
-    `).join('') || '<p class="empty">All caught up!</p>';
+        if (isApplied) {
+            appliedDiv.innerHTML += html;
+        } else {
+            availableDiv.innerHTML += html;
+        }
+    });
 
-    appliedList.innerHTML = appliedItems.map(opp => `
-        <div class="opp-card applied">
-            <div><strong>${opp.title}</strong><br><small>${opp.type}</small></div>
-            <span class="status-tag">Enrolled</span>
-        </div>
-    `).join('') || '<p class="empty">No applications yet.</p>';
+    // Update Progress
+    const progress = (appliedIds.length / (opportunities.length || 1)) * 100;
+    document.getElementById('progress-val').innerText = Math.round(progress) + "%";
 }
 
 function applyFor(id) {
-    // Convert to number to ensure strict matching
-    const targetId = Number(id);
-    if (!appliedIds.includes(targetId)) {
-        appliedIds.push(targetId);
+    console.log("Applying for ID:", id);
+    if (!appliedIds.includes(id)) {
+        appliedIds.push(id);
         localStorage.setItem('uni_applied', JSON.stringify(appliedIds));
         renderStudentView();
     }
 }
 
-// --- UNIVERSITY VIEW LOGIC ---
+// UNIVERSITY FUNCTIONS
 function addOpportunity() {
-    const titleInput = document.getElementById('opp-title');
-    const typeInput = document.getElementById('opp-type');
+    const titleVal = document.getElementById('opp-title').value;
+    const typeVal = document.getElementById('opp-type').value;
 
-    if (!titleInput.value.trim()) {
-        alert("Please enter a title for the opportunity.");
+    if (!titleVal) {
+        alert("Please enter a title");
         return;
     }
 
     const newOpp = {
-        id: Date.now(), // Unique numeric ID
-        title: titleInput.value,
-        type: typeInput.value
+        id: Date.now(), // Unique ID
+        title: titleVal,
+        type: typeVal
     };
 
     opportunities.push(newOpp);
     localStorage.setItem('uni_opps', JSON.stringify(opportunities));
     
-    // Clear inputs and refresh
-    titleInput.value = "";
+    document.getElementById('opp-title').value = ""; // Reset input
     renderUniversityView();
-    alert("Opportunity posted to UniConnect!");
+    alert("Opportunity Posted!");
 }
 
 function renderUniversityView() {
-    const manageList = document.getElementById('uni-manage-list');
-    manageList.innerHTML = opportunities.map(opp => `
+    const manageDiv = document.getElementById('uni-manage-list');
+    manageDiv.innerHTML = opportunities.map(opp => `
         <div class="opp-card">
             <div><strong>${opp.title}</strong> (${opp.type})</div>
             <button class="btn-delete" onclick="deleteOpp(${opp.id})">Remove</button>
         </div>
-    `).join('') || '<p class="empty">No active postings.</p>';
+    `).join('');
 }
 
 function deleteOpp(id) {
-    opportunities = opportunities.filter(opp => opp.id !== Number(id));
-    appliedIds = appliedIds.filter(aid => aid !== Number(id));
+    opportunities = opportunities.filter(o => o.id !== id);
+    appliedIds = appliedIds.filter(aid => aid !== id);
     localStorage.setItem('uni_opps', JSON.stringify(opportunities));
     localStorage.setItem('uni_applied', JSON.stringify(appliedIds));
     renderUniversityView();
 }
 
-function logout() { location.reload(); }
+// EMERGENCY RESET
+function resetSystem() {
+    localStorage.clear();
+    location.reload();
+}
