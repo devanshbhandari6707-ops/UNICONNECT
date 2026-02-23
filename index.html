@@ -1,60 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>UniIntern Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect | Internship Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <nav>
+        <div class="logo">EduConnect</div>
+        <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
+    </nav>
 
-<div class="container">
+    <div class="container">
+        <section id="login-section" class="card">
+            <h2>Welcome Back</h2>
+            <p>Please select your portal</p>
+            <div class="button-group">
+                <button class="btn-primary" onclick="showDashboard('student')">Student Login</button>
+                <button class="btn-secondary" onclick="showDashboard('uni')">University Login</button>
+            </div>
+        </section>
 
-    <h1>UniIntern Portal</h1>
+        <section id="student-dashboard" class="hidden">
+            <header>
+                <h1>Student Dashboard</h1>
+                <div class="stats">
+                    <div class="stat-card">Progress: <span id="student-progress">75%</span></div>
+                </div>
+            </header>
+            
+            <h3>Available Internships & Certs</h3>
+            <div id="opportunity-list" class="grid"></div>
+        </section>
 
-    <!-- Login Section -->
-    <div id="login-section">
-        <h2>Login</h2>
+        <section id="uni-dashboard" class="hidden">
+            <h1>University Admin</h1>
+            <div class="card">
+                <h3>Post New Opportunity</h3>
+                <input type="text" id="opp-title" placeholder="Title (e.g. UX Design Internship)">
+                <select id="opp-type">
+                    <option value="Internship">Internship</option>
+                    <option value="Certification">Certification</option>
+                </select>
+                <button class="btn-primary" onclick="addOpportunity()">Post Now</button>
+            </div>
 
-        <div class="role-select">
-            <button onclick="setRole('student')">Student</button>
-            <button onclick="setRole('university')">University</button>
-        </div>
-
-        <input type="text" id="username" placeholder="Enter Username">
-        <input type="password" id="password" placeholder="Enter Password">
-        <button onclick="login()">Login</button>
+            <h3>Enrolled Students</h3>
+            <table id="student-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Progress</th>
+                    </tr>
+                </thead>
+                <tbody id="student-body">
+                    </tbody>
+            </table>
+        </section>
     </div>
 
-    <!-- Student Dashboard -->
-    <div id="student-dashboard" class="hidden">
-        <h2>Student Dashboard</h2>
-        <button onclick="logout()">Logout</button>
-
-        <h3>Available Internships</h3>
-        <ul id="internship-list"></ul>
-
-        <h3>Your Progress</h3>
-        <ul id="progress-list"></ul>
-    </div>
-
-    <!-- University Dashboard -->
-    <div id="university-dashboard" class="hidden">
-        <h2>University Dashboard</h2>
-        <button onclick="logout()">Logout</button>
-
-        <h3>Add Internship</h3>
-        <input type="text" id="new-internship" placeholder="Internship Title">
-        <button onclick="addInternship()">Add</button>
-
-        <h3>Add Certification</h3>
-        <input type="text" id="new-certification" placeholder="Certification Name">
-        <button onclick="addCertification()">Add</button>
-
-        <h3>Enrolled Students</h3>
-        <ul id="student-list"></ul>
-    </div>
-
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
