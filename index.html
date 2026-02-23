@@ -22,18 +22,26 @@
             </div>
         </section>
 
-        <section id="student-dashboard" class="hidden">
-            <header>
-                <h1>Student Dashboard</h1>
-                <div class="stats">
-                    <div class="stat-card">Progress: <span id="student-progress">75%</span></div>
-                </div>
-            </header>
-            
-            <h3>Available Internships & Certs</h3>
-            <div id="opportunity-list" class="grid"></div>
-        </section>
+      <section id="student-dashboard" class="hidden">
+    <header class="dashboard-header">
+        <h1>Student Dashboard</h1>
+        <div class="stats">
+            <div class="stat-card">Overall Progress: <span id="student-progress">75%</span></div>
+        </div>
+    </header>
+    
+    <div class="dashboard-grid">
+        <div class="column">
+            <h3>Available Opportunities</h3>
+            <div id="opportunity-list" class="grid-vertical"></div>
+        </div>
 
+        <div class="column">
+            <h3>My Applications</h3>
+            <div id="applied-list" class="grid-vertical"></div>
+        </div>
+    </div>
+</section>
         <section id="uni-dashboard" class="hidden">
             <h1>University Admin</h1>
             <div class="card">
@@ -64,3 +72,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
