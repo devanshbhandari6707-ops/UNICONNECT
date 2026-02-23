@@ -1,78 +1,12 @@
-// 1. Load Data with unique IDs
-let opportunities = JSON.parse(localStorage.getItem('opps')) || [
-    { id: 1, title: "Frontend Development", type: "Internship" },
-    { id: 2, title: "Cloud Computing", type: "Certification" },
-    { id: 3, title: "UI/UX Design", type: "Internship" }
+// --- DATABASE INITIALIZATION ---
+let opportunities = JSON.parse(localStorage.getItem('uni_opps')) || [
+    { id: 1001, title: "Software Engineering Intern", type: "Internship" },
+    { id: 1002, title: "Full Stack Certification", type: "Certification" }
 ];
 
-let appliedIds = JSON.parse(localStorage.getItem('applied')) || [];
+let appliedIds = JSON.parse(localStorage.getItem('uni_applied')) || [];
 
-// 2. The "Apply" Function (Specifically targets ONE ID)
-function applyFor(targetId) {
-    // Ensure we are handling the ID as a number or unique string
-    if (!appliedIds.includes(targetId)) {
-        appliedIds.push(targetId);
-        
-        // Save to browser memory
-        localStorage.setItem('applied', JSON.stringify(appliedIds));
-        
-        // RE-RENDER only the student view to show the change
-        renderStudentView();
-    }
-}
-
-// 3. Render Student View
-function renderStudentView() {
-    const availableList = document.getElementById('opportunity-list');
-    const appliedList = document.getElementById('applied-list');
-
-    // Filter logic: Item is "Available" ONLY if its ID is NOT in the appliedIds array
-    const availableItems = opportunities.filter(opp => !appliedIds.includes(opp.id));
-    const appliedItems = opportunities.filter(opp => appliedIds.includes(opp.id));
-
-    availableList.innerHTML = availableItems.map(opp => `
-        <div class="opp-card">
-            <div>
-                <h4 style="margin:0">${opp.title}</h4>
-                <small style="color: #64748b">${opp.type}</small>
-            </div>
-            <button class="btn-primary" onclick="applyFor(${opp.id})">Apply</button>
-        </div>
-    `).join('') || '<p>No more available items.</p>';
-
-    appliedList.innerHTML = appliedItems.map(opp => `
-        <div class="opp-card applied-style">
-            <div>
-                <h4 style="margin:0">${opp.title}</h4>
-                <small style="color: #64748b">${opp.type}</small>
-            </div>
-            <span class="applied-badge">Applied</span>
-        </div>
-    `).join('') || '<p>Nothing applied for yet.</p>';
-}
-
-// 4. University: Adding New Opportunity with UNIQUE ID
-function addOpportunity() {
-    const title = document.getElementById('opp-title').value;
-    const type = document.getElementById('opp-type').value;
-
-    if (title) {
-        const newOpp = {
-            id: Date.now(), // This creates a unique ID based on the timestamp
-            title: title,
-            type: type
-        };
-
-        opportunities.push(newOpp);
-        localStorage.setItem('opps', JSON.stringify(opportunities));
-        
-        alert("Posted: " + title);
-        document.getElementById('opp-title').value = '';
-        renderUniversityView(); // Refresh uni list if visible
-    }
-}
-
-// 5. General Navigation
+// --- NAVIGATION ---
 function showDashboard(role) {
     document.getElementById('login-section').classList.add('hidden');
     document.getElementById('logoutBtn').classList.remove('hidden');
@@ -84,7 +18,89 @@ function showDashboard(role) {
     } else {
         document.getElementById('uni-dashboard').classList.remove('hidden');
         document.getElementById('student-dashboard').classList.add('hidden');
+        renderUniversityView();
     }
+}
+
+// --- STUDENT VIEW LOGIC ---
+function renderStudentView() {
+    const availableList = document.getElementById('opportunity-list');
+    const appliedList = document.getElementById('applied-list');
+
+    // Filter logic
+    const availableItems = opportunities.filter(opp => !appliedIds.includes(opp.id));
+    const appliedItems = opportunities.filter(opp => appliedIds.includes(opp.id));
+
+    // Update Progress Bar (Example: 20% per application up to 100)
+    const progress = Math.min(appliedIds.length * 20, 100);
+    document.getElementById('progress-val').innerText = progress + "%";
+
+    availableList.innerHTML = availableItems.map(opp => `
+        <div class="opp-card">
+            <div><strong>${opp.title}</strong><br><small>${opp.type}</small></div>
+            <button class="btn-primary" onclick="applyFor(${opp.id})">Apply</button>
+        </div>
+    `).join('') || '<p class="empty">All caught up!</p>';
+
+    appliedList.innerHTML = appliedItems.map(opp => `
+        <div class="opp-card applied">
+            <div><strong>${opp.title}</strong><br><small>${opp.type}</small></div>
+            <span class="status-tag">Enrolled</span>
+        </div>
+    `).join('') || '<p class="empty">No applications yet.</p>';
+}
+
+function applyFor(id) {
+    // Convert to number to ensure strict matching
+    const targetId = Number(id);
+    if (!appliedIds.includes(targetId)) {
+        appliedIds.push(targetId);
+        localStorage.setItem('uni_applied', JSON.stringify(appliedIds));
+        renderStudentView();
+    }
+}
+
+// --- UNIVERSITY VIEW LOGIC ---
+function addOpportunity() {
+    const titleInput = document.getElementById('opp-title');
+    const typeInput = document.getElementById('opp-type');
+
+    if (!titleInput.value.trim()) {
+        alert("Please enter a title for the opportunity.");
+        return;
+    }
+
+    const newOpp = {
+        id: Date.now(), // Unique numeric ID
+        title: titleInput.value,
+        type: typeInput.value
+    };
+
+    opportunities.push(newOpp);
+    localStorage.setItem('uni_opps', JSON.stringify(opportunities));
+    
+    // Clear inputs and refresh
+    titleInput.value = "";
+    renderUniversityView();
+    alert("Opportunity posted to UniConnect!");
+}
+
+function renderUniversityView() {
+    const manageList = document.getElementById('uni-manage-list');
+    manageList.innerHTML = opportunities.map(opp => `
+        <div class="opp-card">
+            <div><strong>${opp.title}</strong> (${opp.type})</div>
+            <button class="btn-delete" onclick="deleteOpp(${opp.id})">Remove</button>
+        </div>
+    `).join('') || '<p class="empty">No active postings.</p>';
+}
+
+function deleteOpp(id) {
+    opportunities = opportunities.filter(opp => opp.id !== Number(id));
+    appliedIds = appliedIds.filter(aid => aid !== Number(id));
+    localStorage.setItem('uni_opps', JSON.stringify(opportunities));
+    localStorage.setItem('uni_applied', JSON.stringify(appliedIds));
+    renderUniversityView();
 }
 
 function logout() { location.reload(); }
