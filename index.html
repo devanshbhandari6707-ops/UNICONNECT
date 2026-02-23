@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect | Student & University Portal</title>
+    <title>UniConnect</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav>
         <div class="logo">UniConnect</div>
-        <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
+        <div class="nav-right">
+            <button id="resetBtn" onclick="resetSystem()" style="background: #f1f5f9; color: #64748b; font-size: 11px; margin-right: 10px;">Reset All Data</button>
+            <button id="logoutBtn" class="hidden" onclick="location.reload()">Logout</button>
+        </div>
     </nav>
 
     <div class="container">
         <section id="login-section" class="card">
-            <h2>Welcome to UniConnect</h2>
-            <p>Select your portal to continue</p>
+            <h2>UniConnect Portal</h2>
             <div class="button-group">
                 <button class="btn-primary" onclick="showDashboard('student')">Student Portal</button>
                 <button class="btn-secondary" onclick="showDashboard('uni')">University Portal</button>
@@ -23,38 +25,34 @@
         </section>
 
         <section id="student-dashboard" class="hidden">
-            <header class="dash-header">
-                <h1>Student Dashboard</h1>
-                <div class="stat-pill">My Progress: <span id="progress-val">0%</span></div>
-            </header>
-            
+            <h1>Student Dashboard</h1>
+            <div class="stat-pill">Progress: <span id="progress-val">0%</span></div>
             <div class="dashboard-grid">
                 <div class="column">
-                    <h3>Available Opportunities</h3>
+                    <h3>Available</h3>
                     <div id="opportunity-list" class="grid-vertical"></div>
                 </div>
                 <div class="column">
-                    <h3>Applied & Enrolled</h3>
+                    <h3>Applied</h3>
                     <div id="applied-list" class="grid-vertical"></div>
                 </div>
             </div>
         </section>
 
         <section id="uni-dashboard" class="hidden">
-            <h1>University Administration</h1>
-            <div class="card form-card">
+            <h1>University Admin</h1>
+            <div class="card" style="margin-bottom: 20px;">
                 <h3>Post New Opportunity</h3>
                 <div class="form-group">
-                    <input type="text" id="opp-title" placeholder="Internship or Course Title">
+                    <input type="text" id="opp-title" placeholder="Title (e.g. UX Internship)">
                     <select id="opp-type">
                         <option value="Internship">Internship</option>
                         <option value="Certification">Certification</option>
                     </select>
-                    <button class="btn-primary" onclick="addOpportunity()">Post Now</button>
+                    <button class="btn-primary" id="post-btn" onclick="addOpportunity()">Post Now</button>
                 </div>
             </div>
-
-            <h3>Active Postings</h3>
+            <h3>Existing Postings</h3>
             <div id="uni-manage-list" class="grid-vertical"></div>
         </section>
     </div>
